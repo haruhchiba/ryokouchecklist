@@ -233,6 +233,7 @@
 
   const state = createInitialState();
   let pendingSavedState = null;
+  let hideCompletedItems = false;
 
   const elements = {
     resumePanel: document.querySelector("#resumePanel"),
@@ -248,6 +249,7 @@
     progressBar: document.querySelector("#progressBar"),
     progressTrack: document.querySelector(".progress-track"),
     remainingText: document.querySelector("#remainingText"),
+    toggleCompletedButton: document.querySelector("#toggleCompletedButton"),
     categoryProgress: document.querySelector("#categoryProgress"),
     categoryList: document.querySelector("#categoryList"),
     customItemForm: document.querySelector("#customItemForm"),
@@ -455,6 +457,10 @@
       remainingCount === 0 ? "準備完了です。" : `残り ${remainingCount} 件です。`;
     elements.progressBar.style.width = `${progress}%`;
     elements.progressTrack.setAttribute("aria-valuenow", String(progress));
+    elements.toggleCompletedButton.textContent = hideCompletedItems
+      ? "チェック済みを表示"
+      : "チェック済みを隠す";
+    elements.toggleCompletedButton.setAttribute("aria-pressed", String(hideCompletedItems));
 
     elements.categoryProgress.replaceChildren();
     const itemsByCategory = getItemsByCategory();
@@ -476,7 +482,8 @@
     elements.categoryList.replaceChildren();
 
     CATEGORY_ORDER.forEach((category) => {
-      const items = itemsByCategory.get(category.id);
+      const allItems = itemsByCategory.get(category.id);
+      const items = hideCompletedItems ? allItems.filter((item) => !item.checked) : allItems;
       if (items.length === 0 && category.id !== "essential") {
         return;
       }
@@ -491,15 +498,20 @@
       title.textContent = category.label;
       const remaining = document.createElement("span");
       remaining.className = "category-remaining";
-      const remainingCount = items.filter((item) => !item.checked).length;
+      const remainingCount = allItems.filter((item) => !item.checked).length;
       remaining.textContent = `残り ${remainingCount} 件`;
       header.append(title, remaining);
       card.append(header);
 
-      if (items.length === 0) {
+      if (allItems.length === 0) {
         const emptyNote = document.createElement("p");
         emptyNote.className = "empty-note";
         emptyNote.textContent = "追加した項目がここに表示されます。";
+        card.append(emptyNote);
+      } else if (items.length === 0) {
+        const emptyNote = document.createElement("p");
+        emptyNote.className = "empty-note";
+        emptyNote.textContent = "チェック済みの項目を非表示にしています。";
         card.append(emptyNote);
       }
 
@@ -536,6 +548,13 @@
 
       elements.categoryList.append(card);
     });
+
+    if (hideCompletedItems && getVisibleItems().every((item) => item.checked)) {
+      const completeCard = document.createElement("p");
+      completeCard.className = "card filter-empty-card";
+      completeCard.textContent = "すべてチェック済みです。準備は完了です。";
+      elements.categoryList.append(completeCard);
+    }
   };
 
   const getShareItems = () => {
@@ -678,6 +697,11 @@
     elements.actionMessage.textContent = "すべてのチェックを解除しました。";
   };
 
+  const handleToggleCompletedVisibility = () => {
+    hideCompletedItems = !hideCompletedItems;
+    renderChecklist();
+  };
+
   const buildCopyText = () => {
     const lines = ["旅行持ち物チェックリスト", formatSummary(), formatDetails(), ""];
     const itemsByCategory = getItemsByCategory();
@@ -733,6 +757,7 @@
     }
     replaceState(createInitialState());
     pendingSavedState = null;
+    hideCompletedItems = false;
     elements.conditionForm.reset();
     elements.advancedConditions.open = false;
     elements.resumePanel.hidden = true;
@@ -758,6 +783,7 @@
     elements.customItemForm.addEventListener("submit", handleAddCustomItem);
     elements.copyButton.addEventListener("click", handleCopy);
     elements.clearButton.addEventListener("click", handleClearChecks);
+    elements.toggleCompletedButton.addEventListener("click", handleToggleCompletedVisibility);
     elements.resumeButton.addEventListener("click", handleResume);
     elements.newButton.addEventListener("click", resetApp);
 
