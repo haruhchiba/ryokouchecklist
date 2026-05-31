@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="旅行前日の準備と出発前の最終確認に使える、スマホ向けの旅行持ち物チェックリストメーカーです。"
+    />
+    <title>旅行持ち物チェックリストメーカー</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <main class="app-shell">
+      <header class="hero">
+        <p class="eyebrow">TRAVEL CHECKLIST</p>
+        <h1>旅行持ち物<br class="mobile-break" />チェックリストメーカー</h1>
+        <p class="lead">
+          旅行前日の準備と、出発前の最終確認に使える忘れ物防止チェックリストです。
+        </p>
+      </header>
+
+      <section
+        id="resumePanel"
+        class="resume-panel"
+        aria-labelledby="resumeTitle"
+        hidden
+      >
+        <p id="resumeTitle" class="resume-title">
+          前回のチェックリストがあります。
+        </p>
+        <div class="resume-actions">
+          <button id="resumeButton" class="button button-primary" type="button">
+            前回の続きから確認する
+          </button>
+          <button id="newButton" class="button button-secondary" type="button">
+            新しく作る
+          </button>
+        </div>
+      </section>
+
+      <section class="card setup-card" aria-labelledby="setupTitle">
+        <div class="section-heading">
+          <p class="step-label">STEP 1</p>
+          <h2 id="setupTitle">旅行の条件を選ぶ</h2>
+        </div>
+
+        <form id="conditionForm" novalidate>
+          <fieldset class="condition-group">
+            <legend>
+              旅行日数
+              <span class="required-badge">必須</span>
+            </legend>
+            <div class="choice-grid">
+              <label class="choice-chip">
+                <input type="radio" name="duration" value="daytrip" />
+                <span>日帰り</span>
+              </label>
+              <label class="choice-chip">
+                <input type="radio" name="duration" value="oneNight" />
+                <span>1泊2日</span>
+              </label>
+              <label class="choice-chip">
+                <input type="radio" name="duration" value="twoNights" />
+                <span>2泊3日</span>
+              </label>
+              <label class="choice-chip">
+                <input type="radio" name="duration" value="longStay" />
+                <span>3泊以上</span>
+              </label>
+            </div>
+          </fieldset>
+
+          <fieldset class="condition-group">
+            <legend>
+              旅行タイプ
+              <span class="required-badge">必須</span>
+              <span class="legend-note">複数選択できます</span>
+            </legend>
+            <div class="choice-grid">
+              <label class="choice-chip">
+                <input type="checkbox" name="types" value="hotSpring" />
+                <span>温泉</span>
+              </label>
+              <label class="choice-chip">
+                <input type="checkbox" name="types" value="tourism" />
+                <span>観光</span>
+              </label>
+              <label class="choice-chip">
+                <input type="checkbox" name="types" value="themePark" />
+                <span>テーマパーク</span>
+              </label>
+              <label class="choice-chip">
+                <input type="checkbox" name="types" value="concert" />
+                <span>ライブ遠征</span>
+              </label>
+              <label class="choice-chip">
+                <input type="checkbox" name="types" value="homecoming" />
+                <span>帰省</span>
+              </label>
+              <label class="choice-chip">
+                <input type="checkbox" name="types" value="business" />
+                <span>出張</span>
+              </label>
+              <label class="choice-chip">
+                <input type="checkbox" name="types" value="overseas" />
+                <span>海外旅行</span>
+              </label>
+            </div>
+          </fieldset>
+
+          <details id="advancedConditions" class="advanced-conditions">
+            <summary>こだわり条件を追加する</summary>
+            <div class="advanced-content">
+              <fieldset class="condition-group compact-group">
+                <legend>季節</legend>
+                <div class="choice-grid">
+                  <label class="choice-chip">
+                    <input type="checkbox" name="seasons" value="spring" />
+                    <span>春</span>
+                  </label>
+                  <label class="choice-chip">
+                    <input type="checkbox" name="seasons" value="summer" />
+                    <span>夏</span>
+                  </label>
+                  <label class="choice-chip">
+                    <input type="checkbox" name="seasons" value="autumn" />
+                    <span>秋</span>
+                  </label>
+                  <label class="choice-chip">
+                    <input type="checkbox" name="seasons" value="winter" />
+                    <span>冬</span>
+                  </label>
+                </div>
+              </fieldset>
+
+              <fieldset class="condition-group compact-group">
+                <legend>天候</legend>
+                <div class="choice-grid">
+                  <label class="choice-chip">
+                    <input type="checkbox" name="rain" value="rain" />
+                    <span>雨の日</span>
+                  </label>
+                </div>
+              </fieldset>
+
+              <fieldset class="condition-group compact-group">
+                <legend>移動手段</legend>
+                <div class="choice-grid">
+                  <label class="choice-chip">
+                    <input type="checkbox" name="transports" value="train" />
+                    <span>電車</span>
+                  </label>
+                  <label class="choice-chip">
+                    <input type="checkbox" name="transports" value="car" />
+                    <span>車</span>
+                  </label>
+                  <label class="choice-chip">
+                    <input type="checkbox" name="transports" value="plane" />
+                    <span>飛行機</span>
+                  </label>
+                  <label class="choice-chip">
+                    <input type="checkbox" name="transports" value="bus" />
+                    <span>高速バス</span>
+                  </label>
+                </div>
+              </fieldset>
+
+              <fieldset class="condition-group compact-group">
+                <legend>同行者</legend>
+                <div class="choice-grid">
+                  <label class="choice-chip">
+                    <input type="checkbox" name="companions" value="solo" />
+                    <span>一人</span>
+                  </label>
+                  <label class="choice-chip">
+                    <input type="checkbox" name="companions" value="friends" />
+                    <span>友人</span>
+                  </label>
+                  <label class="choice-chip">
+                    <input type="checkbox" name="companions" value="couple" />
+                    <span>カップル</span>
+                  </label>
+                  <label class="choice-chip">
+                    <input type="checkbox" name="companions" value="family" />
+                    <span>家族</span>
+                  </label>
+                </div>
+              </fieldset>
+
+              <fieldset class="condition-group compact-group volume-group">
+                <legend>表示量</legend>
+                <div class="choice-grid volume-grid">
+                  <label class="choice-chip">
+                    <input type="radio" name="volume" value="minimal" />
+                    <span>最小限</span>
+                  </label>
+                  <label class="choice-chip">
+                    <input
+                      type="radio"
+                      name="volume"
+                      value="standard"
+                      checked
+                    />
+                    <span>標準</span>
+                  </label>
+                  <label class="choice-chip">
+                    <input type="radio" name="volume" value="careful" />
+                    <span>しっかり</span>
+                  </label>
+                </div>
+              </fieldset>
+            </div>
+          </details>
+
+          <p id="formError" class="error-message" role="alert" aria-live="assertive"></p>
+          <button class="button button-primary generate-button" type="submit">
+            忘れ物チェックリストを作る
+          </button>
+        </form>
+      </section>
+
+      <section
+        id="checklistSection"
+        class="checklist-section"
+        aria-labelledby="checklistTitle"
+        hidden
+      >
+        <div class="result-intro">
+          <p class="step-label">STEP 2</p>
+          <h2 id="checklistTitle">持ち物をチェックする</h2>
+          <p id="conditionSummary" class="condition-summary"></p>
+          <p id="conditionDetails" class="condition-details"></p>
+        </div>
+
+        <section class="card progress-card" aria-labelledby="progressTitle">
+          <div class="progress-heading">
+            <div>
+              <p class="mini-label">CHECK PROGRESS</p>
+              <h3 id="progressTitle">準備の進み具合</h3>
+            </div>
+            <p id="progressText" class="progress-count"></p>
+          </div>
+          <div
+            class="progress-track"
+            role="progressbar"
+            aria-label="全体のチェック進捗"
+            aria-valuemin="0"
+            aria-valuemax="100"
+            aria-valuenow="0"
+          >
+            <span id="progressBar" class="progress-bar"></span>
+          </div>
+          <p id="remainingText" class="remaining-text"></p>
+          <div id="categoryProgress" class="category-progress"></div>
+        </section>
+
+        <section class="card custom-card" aria-labelledby="customTitle">
+          <p class="mini-label">MY ESSENTIALS</p>
+          <h3 id="customTitle">忘れたくないものを追加</h3>
+          <p class="card-note">
+            自分だけの必需品を追加して、最初のカテゴリで確認できます。
+          </p>
+          <form id="customItemForm" class="custom-form">
+            <label class="visually-hidden" for="customItemInput">
+              忘れたくないもの
+            </label>
+            <input
+              id="customItemInput"
+              type="text"
+              maxlength="60"
+              placeholder="薬、コンタクト、チケットなどを追加"
+              autocomplete="off"
+            />
+            <button class="button button-add" type="submit">追加</button>
+          </form>
+          <p id="customError" class="error-message" role="alert" aria-live="polite"></p>
+        </section>
+
+        <div id="categoryList" class="category-list"></div>
+
+        <section class="card action-card" aria-labelledby="actionTitle">
+          <h3 id="actionTitle">リストを使う</h3>
+          <div class="action-grid">
+            <button id="copyButton" class="button button-primary" type="button">
+              コピー
+            </button>
+            <a
+              id="lineShareButton"
+              class="button button-line"
+              href="#"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              LINE共有
+            </a>
+            <button id="clearButton" class="button button-secondary" type="button">
+              全チェック解除
+            </button>
+          </div>
+          <p id="actionMessage" class="success-message" aria-live="polite"></p>
+        </section>
+      </section>
+    </main>
+
+    <script src="script.js"></script>
+  </body>
+</html>
